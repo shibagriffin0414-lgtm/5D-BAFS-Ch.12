@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HKDSE BAFS: Ch 12 Valuation of Inventory</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --surface-color: #1e1e1e;
+            --primary-color: #ff9800; /* Warm orange to reflect the textbook's theme */
+            --primary-hover: #e68a00;
+            --secondary-color: #03dac6;
+            --text-main: #e0e0e0;
+            --text-muted: #b0b0b0;
+            --border-color: #333333;
+            --table-border: #444444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--surface-color);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Tab Navigation Styles */
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            background-color: var(--surface-color);
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        section {
+            background-color: var(--surface-color);
+            margin-bottom: 30px;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        /* Summary Styles */
+        .summary-text p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        .summary-list li {
+            margin-bottom: 10px;
+        }
+        .highlight {
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+        
+        .journal-box {
+            background-color: #2a2a2a;
+            border-left: 4px solid var(--secondary-color);
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 1.05em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid var(--table-border);
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #2a2a2a;
+            color: var(--secondary-color);
+        }
+
+        /* Mind Map Styles */
+        .mind-map {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .node {
+            background-color: var(--border-color);
+            padding: 15px 25px;
+            border-radius: 8px;
+            border: 2px solid var(--primary-color);
+            margin: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+            max-width: 250px;
+        }
+
+        .node-root {
+            font-size: 1.3em; 
+            border-color: var(--secondary-color);
+            background-color: #263238;
+            max-width: 400px;
+        }
+
+        .node:hover {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            transform: scale(1.05);
+        }
+
+        .branches {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .sub-branches {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-top: 2px dashed var(--table-border);
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        /* Video Grid */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-title {
+            margin-top: 10px;
+            text-align: center;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        /* Quiz Generator */
+        .quiz-container {
+            text-align: center;
+        }
+
+        #question-text {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            min-height: 60px;
+            padding: 20px;
+            background: #2a2a2a;
+            border-radius: 8px;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        #options-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .option-btn {
+            background-color: var(--border-color);
+            color: var(--text-main);
+            border: 2px solid var(--primary-color);
+            font-size: 1.1rem;
+            padding: 15px;
+        }
+
+        .option-btn:hover {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+        }
+
+        #feedback {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            min-height: 30px;
+        }
+
+        .correct { color: #00e676; }
+        .incorrect { color: #cf6679; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>HKDSE BAFS</h1>
+        <p>Chapter 12: Valuation of Inventory</p>
+    </header>
+
+    <!-- Tabs Navigation -->
+    <nav class="tabs-container">
+        <button class="tab-btn active" onclick="openTab(event, 'tab-summary')">Detailed Summary</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab-mindmap')">Concept Map</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab-resources')">Video Resources</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab-practice')">Practice Generator</button>
+    </nav>
+
+    <div class="container">
+        
+        <!-- SUMMARY TAB -->
+        <div id="tab-summary" class="tab-content active">
+            <section class="summary-text">
+                <h2>Comprehensive Summary</h2>
+                
+                <h3>1. Types of Inventory</h3>
+                <p>Generally speaking, there are three types of inventory in manufacturing/trading:</p>
+                <ul class="summary-list">
+                    <li><strong>Finished goods:</strong> Goods that are ready for sale. <em>(Note: Only finished goods are covered in the HKDSE BAFS curriculum)</em></li>
+                    <li><strong>Work-in-progress:</strong> Goods in the process of production.</li>
+                    <li><strong>Raw materials:</strong> Materials used in production.</li>
+                </ul>
+
+                <h3>2. Inventory Valuation Method (WAVCO)</h3>
+                <p>While there are several methods (like FIFO and LIFO), the curriculum focuses on the <strong>Weighted Average Cost (WAVCO)</strong> method.</p>
+                <div class="journal-box">
+                    Weighted average cost per unit = <br>
+                    (Total cost of goods available for sale) ÷ (Total number of units available for sale)
+                </div>
+
+                <h3>3. Lower of Cost and Net Realisable Value (NRV)</h3>
+                <p>Inventory must be valued at the <strong>lower of cost and net realisable value</strong>. Compare the cost and NRV item by item:</p>
+                <ul class="summary-list">
+                    <li>If cost < NRV: Inventory should be valued at <strong>cost</strong>.</li>
+                    <li>If cost > NRV: Inventory should be valued at <strong>NRV</strong>.</li>
+                </ul>
+                <p><strong>Goods sent on a sale or return basis:</strong> Goods should be counted as the supplier's inventory if they are not yet accepted by the customer.</p>
+
+                <h3>4. Valuation of closing inventory AFTER the reporting period</h3>
+                <p>Often, an inventory count takes place several days after the year-end date. We must <strong>work backwards</strong> to find the actual year-end value:</p>
+                <table>
+                    <tr>
+                        <th>Computation of Inventory as at Year-End</th>
+                        <th>Amount ($)</th>
+                    </tr>
+                    <tr>
+                        <td>Inventory at count date (e.g., 5 Jan)</td>
+                        <td>XX</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Add:</strong> Sales/Returns outwards between Year-End and Count Date (<strong>at cost</strong>)</td>
+                        <td>XX</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Less:</strong> Purchases/Returns inwards between Year-End and Count Date (<strong>at cost</strong>)</td>
+                        <td>(XX)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Inventory at Year-End (e.g., 31 Dec)</strong></td>
+                        <td><strong>XXX</strong></td>
+                    </tr>
+                </table>
+
+                <h3>5. Normal vs. Abnormal Inventory Loss</h3>
+                <p>It is common to suffer inventory losses. The accounting treatments are different based on the cause:</p>
+                
+                <h4>A. Normal Inventory Loss</h4>
+                <p>Expected in business operations (e.g., eggs broken during daily delivery). It is treated as <strong>part of the cost of goods sold</strong>.</p>
+                <ul class="summary-list">
+                    <li><strong>Identified before inventory valuation:</strong> No entry needed.</li>
+                    <li><strong>Identified after inventory valuation:</strong> <br>
+                        Dr Profit and loss (cost of goods sold)<br>
+                        Cr Inventory
+                    </li>
+                </ul>
+
+                <h4>B. Abnormal Inventory Loss</h4>
+                <p>Unexpected loss caused by theft, fire, or flooding. It is treated as an <strong>expense</strong> for the period.</p>
+                <p><strong>Step 1: Record the loss</strong></p>
+                <ul class="summary-list">
+                    <li><strong>Identified before valuation:</strong><br>
+                        Dr Abnormal inventory loss<br>
+                        Cr Purchases
+                    </li>
+                    <li><strong>Identified after valuation:</strong><br>
+                        Dr Abnormal inventory loss<br>
+                        Cr Profit and loss (cost of goods sold)
+                    </li>
+                </ul>
+                <p><strong>Step 2: Record compensation (if covered by insurance)</strong><br>
+                    Dr Cash / Bank / Insurance receivable<br>
+                    Cr Abnormal inventory loss
+                </p>
+                <p><strong>Step 3: At the end of the accounting period (transfer net loss)</strong><br>
+                    Dr Profit and loss (expenses)<br>
+                    Cr Abnormal inventory loss (net balance)
+                </p>
+            </section>
+        </div>
+
+        <!-- MIND MAP TAB -->
+        <div id="tab-mindmap" class="tab-content">
+            <section id="mindmap">
+                <h2>Concept Map</h2>
+                <p style="text-align:center; color: var(--text-muted); font-size: 0.9em;">Based directly on the textbook's visual summary</p>
+                <div class="mind-map">
+                    <div class="node node-root">
+                        Valuation of inventory
+                    </div>
+                    
+                    <div class="branches">
+                        <!-- Branch 1 -->
+                        <div class="node">
+                            Valuation method
+                            <div class="sub-branches">
+                                <span style="font-size: 0.8em; font-weight: normal;">Weighted average cost method (WAVCO)</span>
+                                <span style="font-size: 0.7em; font-weight: normal; margin-top:5px; color: var(--secondary-color);">Cost per unit = Total cost / Total units</span>
+                            </div>
+                        </div>
+
+                        <!-- Branch 2 -->
+                        <div class="node">
+                            Lower of cost and net realisable value
+                            <div class="sub-branches">
+                                <span style="font-size: 0.8em; font-weight: normal;">If cost < NRV: Valued at cost<br>If cost > NRV: Valued at NRV</span>
+                            </div>
+                        </div>
+
+                        <!-- Branch 3 -->
+                        <div class="node">
+                            Goods sent on a sale or return basis
+                            <div class="sub-branches">
+                                <span style="font-size: 0.8em; font-weight: normal;">Supplier's inventory if not yet accepted by customer</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Branch 4 -->
+                        <div class="node">
+                            Valuation of closing inventory after end of period
+                            <div class="sub-branches">
+                                <span style="font-size: 0.8em; font-weight: normal;">Work backwards: Add Sales (at cost), Less Purchases (at cost)</span>
+                            </div>
+                        </div>
+
+                        <!-- Branch 5 -->
+                        <div class="node">
+                            Normal vs. abnormal inventory loss
+                            <div class="sub-branches">
+                                <div style="display:flex; gap: 10px; margin-top: 10px;">
+                                    <div class="node" style="padding: 10px; font-size: 0.85em;">Normal<br>inventory loss</div>
+                                    <div class="node" style="padding: 10px; font-size: 0.85em;">Abnormal<br>inventory loss</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- RESOURCES TAB -->
+        <div id="tab-resources" class="tab-content">
+            <section id="resources">
+                <h2>Video Resources</h2>
+                <div class="video-grid">
+                    <div>
+                        <div class="video-wrapper">
+                            <iframe src="https://www.youtube.com/embed/2GEJR2cGvm8" allowfullscreen></iframe>
+                        </div>
+                        <div class="video-title">Video 1</div>
+                    </div>
+                    <div>
+                        <div class="video-wrapper">
+                            <iframe src="https://www.youtube.com/embed/2GEJR2cGvm8" allowfullscreen></iframe>
+                        </div>
+                        <div class="video-title">Video 2</div>
+                    </div>
+                    <div>
+                        <div class="video-wrapper">
+                            <iframe src="https://www.youtube.com/embed/8z5qwMT_Zeo" allowfullscreen></iframe>
+                        </div>
+                        <div class="video-title">Video 3</div>
+                    </div>
+                    <div>
+                        <div class="video-wrapper">
+                            <iframe src="https://www.youtube.com/embed/Xe-rWdRqVYE" allowfullscreen></iframe>
+                        </div>
+                        <div class="video-title">Video 4</div>
+                    </div>
+                    <div>
+                        <div class="video-wrapper">
+                            <iframe src="https://www.youtube.com/embed/qeEJir4LcZ8" allowfullscreen></iframe>
+                        </div>
+                        <div class="video-title">Video 5</div>
+                    </div>
+                    <div>
+                        <div class="video-wrapper">
+                            <iframe src="https://www.youtube.com/embed/EheCM7WY3ow" allowfullscreen></iframe>
+                        </div>
+                        <div class="video-title">Video 6</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- PRACTICE TAB -->
+        <div id="tab-practice" class="tab-content">
+            <section id="practice">
+                <h2>Infinite Practice Question Generator</h2>
+                <p style="text-align:center; color: var(--text-muted); margin-bottom: 20px;">Test your knowledge on WAVCO, Working Backwards, and Inventory Losses.</p>
+                <div class="quiz-container">
+                    <div id="question-text">Click the button below to generate a question!</div>
+                    <div id="options-container"></div>
+                    <div id="feedback"></div>
+                    <br>
+                    <button class="btn" onclick="generateQuestion()">Generate New Question</button>
+                </div>
+            </section>
+        </div>
+
+    </div>
+
+    <script>
+        // Tab switching logic
+        function openTab(evt, tabId) {
+            // Hide all tab contents
+            const tabContents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove("active");
+            }
+
+            // Remove active class from all buttons
+            const tabBtns = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < tabBtns.length; i++) {
+                tabBtns[i].classList.remove("active");
+            }
+
+            // Show current tab and add active class to button
+            document.getElementById(tabId).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Quiz Logic
+        let currentCorrectAnswer = 0;
+        let isTextAnswer = false;
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function generateQuestion() {
+            // Reset UI
+            document.getElementById('feedback').innerText = "";
+            document.getElementById('feedback').className = "";
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = "";
+
+            // Question types based on textbook curriculum
+            // 0 = WAVCO calculation
+            // 1 = Work backwards calculation
+            // 2 = Abnormal loss net calculation
+            // 3 = Theory (Normal vs Abnormal treatment)
+            const qType = getRandomInt(0, 3);
+            let qText = "";
+            let options = [];
+            isTextAnswer = false;
+
+            if (qType === 0) {
+                // Find WAVCO
+                const openUnits = getRandomInt(10, 50);
+                const openCost = openUnits * getRandomInt(40, 80);
+                
+                const purUnits = getRandomInt(20, 60);
+                const purCost = purUnits * getRandomInt(50, 100);
+
+                const totalUnits = openUnits + purUnits;
+                const totalCost = openCost + purCost;
+                
+                // Ensure nice rounding for display
+                const wavco = Math.round((totalCost / totalUnits) * 100) / 100;
+                currentCorrectAnswer = wavco;
+                
+                qText = `A firm has an opening inventory of ${openUnits} units costing $${openCost}. During the year, they purchased ${purUnits} units at a total cost of $${purCost}. \n\nWhat is the Weighted Average Cost (WAVCO) per unit?`;
+                
+                options = [
+                    wavco, 
+                    Math.round((openCost / openUnits) * 100) / 100, 
+                    Math.round((purCost / purUnits) * 100) / 100, 
+                    Math.round(((openCost + purCost) / (openUnits + purUnits + 10)) * 100) / 100
+                ];
+            } else if (qType === 1) {
+                // Work backwards
+                const countInventory = getRandomInt(100, 300) * 100;
+                const salesValue = getRandomInt(30, 80) * 100;
+                const markup = 0.25; // 25% mark up on cost
+                const salesAtCost = salesValue / (1 + markup);
+                
+                const purchases = getRandomInt(10, 40) * 100;
+
+                // Formula: Count + Sales(cost) - Purchases
+                currentCorrectAnswer = countInventory + salesAtCost - purchases;
+                
+                qText = `Year-end is 31 Dec. An inventory count on 8 Jan valued inventory at $${countInventory}. Between 1 Jan and 8 Jan:\n- Goods were sold for $${salesValue} (Markup on cost is 25%).\n- Goods were purchased for $${purchases}.\n\nWhat is the value of inventory as at 31 Dec?`;
+                
+                options = [
+                    currentCorrectAnswer,
+                    countInventory + salesValue - purchases, // Trap: using sales price instead of cost
+                    countInventory - salesAtCost + purchases, // Trap: reversed signs
+                    countInventory + salesAtCost + purchases // Trap: added purchases
+                ];
+            } else if (qType === 2) {
+                // Abnormal Loss Net Transfer
+                const totalLoss = getRandomInt(50, 150) * 1000;
+                const insurancePercent = getRandomInt(5, 8) * 10; // 50% to 80%
+                
+                const compensation = totalLoss * (insurancePercent / 100);
+                currentCorrectAnswer = totalLoss - compensation;
+                
+                qText = `A fire broke out and destroyed inventory costing $${totalLoss}. The insurance company agreed to compensate ${insurancePercent}% of the loss. \n\nWhat is the net balance of the abnormal inventory loss that should be transferred to the Profit and Loss account as an expense?`;
+                
+                options = [
+                    currentCorrectAnswer,
+                    totalLoss,
+                    compensation,
+                    totalLoss + compensation
+                ];
+            } else {
+                // Theory: Normal vs Abnormal
+                isTextAnswer = true;
+                const isNormal = Math.random() > 0.5;
+                
+                if (isNormal) {
+                    currentCorrectAnswer = "Part of the cost of goods sold";
+                    qText = `How should a "Normal inventory loss" (e.g., expected loss like eggs broken during delivery) be treated in the financial statements?`;
+                    options = [
+                        "Part of the cost of goods sold",
+                        "As a separate expense in the P&L",
+                        "Deducted directly from capital",
+                        "Ignored entirely"
+                    ];
+                } else {
+                    currentCorrectAnswer = "As an expense for the accounting period";
+                    qText = `How should an "Abnormal inventory loss" (e.g., unexpected loss from a warehouse fire) be treated in the financial statements?`;
+                    options = [
+                        "As an expense for the accounting period",
+                        "Part of the cost of goods sold",
+                        "Deducted from sales revenue",
+                        "Capitalized as a non-current asset"
+                    ];
+                }
+            }
+
+            // Shuffle options
+            options = [...new Set(options)]; // Ensure unique
+            while(options.length < 4 && !isTextAnswer) {
+                options.push(currentCorrectAnswer + getRandomInt(-20, 20)*10);
+                options = [...new Set(options)];
+            }
+            options.sort(() => Math.random() - 0.5);
+
+            document.getElementById('question-text').innerText = qText;
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "btn option-btn";
+                // Format text vs numbers
+                btn.innerText = isTextAnswer ? opt : "$" + opt.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2});
+                btn.onclick = () => checkAnswer(opt, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected, btnElement) {
+            const feedback = document.getElementById('feedback');
+            
+            // Disable all buttons after guess
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(b => b.disabled = true);
+
+            if (selected === currentCorrectAnswer) {
+                feedback.innerText = "Correct! Well done.";
+                feedback.className = "correct";
+                btnElement.style.backgroundColor = "var(--primary-color)";
+                btnElement.style.color = "var(--bg-color)";
+            } else {
+                let formattedCorrect = isTextAnswer ? currentCorrectAnswer : "$" + currentCorrectAnswer.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2});
+                feedback.innerText = `Incorrect. The correct answer was: ${formattedCorrect}`;
+                feedback.className = "incorrect";
+                btnElement.style.backgroundColor = "#cf6679";
+                btnElement.style.color = "var(--bg-color)";
+                btnElement.style.borderColor = "#cf6679";
+            }
+        }
+
+        // Initialize first question on load
+        window.onload = generateQuestion;
+    </script>
+</body>
+</html>
